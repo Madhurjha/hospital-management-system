@@ -1,0 +1,851 @@
+USE [HMSystem]
+GO
+/****** Object:  Table [dbo].[DoctorMst]    Script Date: 09/02/2020 17:05:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[DoctorMst](
+	[DID] [int] IDENTITY(1,1) NOT NULL,
+	[DoctorName] [nvarchar](100) NULL,
+	[Mobile] [nvarchar](50) NULL,
+	[Speciality] [nvarchar](50) NULL,
+	[EDate] [datetime] NULL,
+ CONSTRAINT [PK_DoctorMst] PRIMARY KEY CLUSTERED 
+(
+	[DID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[PatientMst]    Script Date: 09/02/2020 17:05:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[PatientMst](
+	[PID] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](100) NULL,
+	[Gender] [nvarchar](50) NULL,
+	[Age] [int] NULL,
+	[Address] [nvarchar](100) NULL,
+	[City] [nvarchar](50) NULL,
+	[Pincode] [nvarchar](50) NULL,
+	[Mobile] [nvarchar](50) NULL,
+	[ReferByDoctor] [nvarchar](50) NULL,
+	[Disease] [nvarchar](50) NULL,
+	[DoctorName] [nvarchar](50) NULL,
+	[RoomType] [nvarchar](50) NULL,
+	[EstimatedBill] [float] NULL,
+	[Status] [nvarchar](50) NULL,
+	[EDate] [datetime] NULL,
+ CONSTRAINT [PK_PatientMSt] PRIMARY KEY CLUSTERED 
+(
+	[PID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RoomMst]    Script Date: 09/02/2020 17:05:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RoomMst](
+	[RID] [int] IDENTITY(1,1) NOT NULL,
+	[RoomType] [nvarchar](50) NULL,
+	[TotalRoom] [int] NULL,
+	[Price] [int] NULL,
+	[EDate] [datetime] NULL,
+ CONSTRAINT [PK_RoomMst] PRIMARY KEY CLUSTERED 
+(
+	[RID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[PaymentMst]    Script Date: 09/02/2020 17:05:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[PaymentMst](
+	[PayID] [int] IDENTITY(1,1) NOT NULL,
+	[BID] [int] NULL,
+	[PID] [int] NULL,
+	[Amount] [float] NULL,
+	[Payment_Type] [nvarchar](50) NULL,
+	[Check_No] [nvarchar](50) NULL,
+	[Bank_Name] [nvarchar](50) NULL,
+	[EDate] [datetime] NULL,
+ CONSTRAINT [PK_PaymentMSt] PRIMARY KEY CLUSTERED 
+(
+	[PayID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[BillMst]    Script Date: 09/02/2020 17:05:03 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[BillMst](
+	[BID] [int] IDENTITY(1,1) NOT NULL,
+	[PID] [int] NULL,
+	[Room_Bill] [float] NULL,
+	[Doctor_Bill] [float] NULL,
+	[Medicine_Bill] [float] NULL,
+	[Total_Bill] [float] NULL,
+	[Paid_Bill] [float] NULL,
+	[Remaining_Bill] [float] NULL,
+	[Status] [nvarchar](50) NULL,
+	[EDate] [datetime] NULL,
+ CONSTRAINT [PK_BillMst] PRIMARY KEY CLUSTERED 
+(
+	[BID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  StoredProcedure [dbo].[ROOMMST_SELECT_BY_RTYPE]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ROOMMST_SELECT_BY_RTYPE]
+@RTYPE AS NVARCHAR(256)	
+AS
+BEGIN
+	
+	
+	SELECT * FROM RoomMst WHERE RoomType=@RTYPE
+	
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[ROOMMST_SELECT_BY_RID]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ROOMMST_SELECT_BY_RID]
+@RID AS INT		
+AS
+BEGIN
+	
+	
+	SELECT * FROM RoomMst WHERE RID=@RID
+	
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[ROOMMST_SELECT]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ROOMMST_SELECT]
+		
+AS
+BEGIN
+	
+	
+	SELECT * FROM RoomMst
+	
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[ROOMMST_INSERT]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ROOMMST_INSERT]
+
+@RTYPE AS NVARCHAR(256),
+@TROOM AS INT,
+@PRICE AS INT
+AS
+BEGIN
+	
+	
+	INSERT INTO RoomMst VALUES (@RTYPE,@TROOM,@PRICE,GETDATE());
+	
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[ROOMMST_DELETE]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ROOMMST_DELETE]
+@RID AS INT
+AS
+BEGIN
+	
+	
+	DELETE FROM RoomMst WHERE RID=@RID
+	
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[ROOMMST_CHANGE_PRICE]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ROOMMST_CHANGE_PRICE]
+
+@RID AS INT,
+@PRICE AS INT,
+@troom as int
+AS
+BEGIN
+	
+	
+	UPDATE RoomMst SET Price=@PRICE, TotalRoom=@troom WHERE RID=@RID
+	
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[ROOMMST_ADD_ROOMS]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ROOMMST_ADD_ROOMS]
+
+@RID AS INT,
+@QNT AS INT
+AS
+BEGIN
+	
+	
+	UPDATE RoomMst SET TotalRoom=TotalRoom+@QNT WHERE RID=@RID
+	
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PAYMENT_SELECT_PID]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[PAYMENT_SELECT_PID]
+@PID AS INT
+AS
+BEGIN
+	
+	
+SELECT * FROM PaymentMst WHERE PID=@PID
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PAYMENT_SELECT_PAYID]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[PAYMENT_SELECT_PAYID]
+@PAYID AS INT
+AS
+BEGIN
+	
+	
+SELECT * FROM PaymentMst WHERE PayID=@PAYID
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PAYMENT_SELECT_BID]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[PAYMENT_SELECT_BID]
+@BID AS INT
+AS
+BEGIN
+	
+	
+SELECT * FROM PaymentMst WHERE BID=@BID
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PAYMENT_SELECT]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[PAYMENT_SELECT]
+
+AS
+BEGIN
+	
+	
+SELECT * FROM PaymentMst
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PAYMENT_INSERT]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[PAYMENT_INSERT]
+@BID AS INT,
+@PID AS INT,
+@AMT AS FLOAT,
+@PAY_TYPE AS NVARCHAR(256),
+@CHECKNO AS NVARCHAR(256),
+@BANK AS NVARCHAR(256)
+AS
+BEGIN
+	
+	INSERT INTO PaymentMst VALUES(@BID,@PID,@AMT,@PAY_TYPE,@CHECKNO,@BANK,GETDATE())
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PAYMENT_DELETE]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[PAYMENT_DELETE]
+@PAYID AS INT
+AS
+BEGIN
+	
+DELETE FROM PaymentMst WHERE PID=@PAYID
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PATIENT_UPDATE_STATUS]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create PROCEDURE [dbo].[PATIENT_UPDATE_STATUS]
+	@PID AS INT,
+	@STATUS AS NVARCHAR(256)	
+AS
+BEGIN
+	
+	
+	UPDATE  PATIENTMST SET Status=@STATUS WHERE PID=@PID
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PATIENT_UPDATE_ROOM]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[PATIENT_UPDATE_ROOM]
+	@PID AS INT,
+	@RTYPE AS NVARCHAR(256)	
+AS
+BEGIN
+	
+	
+	UPDATE  PATIENTMST SET RoomType=@RTYPE WHERE PID=@PID
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PATIENT_SELECT_MAX_PID]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create PROCEDURE [dbo].[PATIENT_SELECT_MAX_PID]
+	
+	
+AS
+BEGIN
+	
+	
+	SELECT max(pid) as PID FROM  PATIENTMST  
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PATIENT_SELECT_BY_STATUS]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create PROCEDURE [dbo].[PATIENT_SELECT_BY_STATUS]
+	@status as nvarchar(256)	
+AS
+BEGIN
+	
+	
+	SELECT * FROM  PATIENTMST where Status=@status
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PATIENT_SELECT_BY_Pname and Mobile]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create PROCEDURE [dbo].[PATIENT_SELECT_BY_Pname and Mobile]
+	@pname as nvarchar(256),
+	@mob as nvarchar(256)
+AS
+BEGIN
+	
+	
+	SELECT * FROM  PATIENTMST WHERE Name=@pname and Mobile=@mob
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PATIENT_SELECT_BY_Pname]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create PROCEDURE [dbo].[PATIENT_SELECT_BY_Pname]
+	@pname as nvarchar(256)
+	
+AS
+BEGIN
+	
+	
+	SELECT * FROM  PATIENTMST WHERE Name=@pname  
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PATIENT_SELECT_BY_PID]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[PATIENT_SELECT_BY_PID]
+	@PID AS INT	
+AS
+BEGIN
+	
+	
+	SELECT * FROM  PATIENTMST WHERE PID=@PID
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PATIENT_SELECT_BY_mobile]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create PROCEDURE [dbo].[PATIENT_SELECT_BY_mobile]
+	@mobile as nvarchar(256)
+	
+AS
+BEGIN
+	
+	
+	SELECT * FROM  PATIENTMST WHERE Mobile=@mobile
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PATIENT_SELECT_BILL_STATUS_REPORT_DATEWISE]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[PATIENT_SELECT_BILL_STATUS_REPORT_DATEWISE]
+@status as nvarchar(256),
+@fdate as datetime,
+@tdate as datetime,
+@var as int
+		
+AS
+BEGIN
+	
+	if @var = 1 
+	begin
+	
+	SELECT p.*,b.* FROM  PATIENTMST as p, BillMst as b where p.PID=b.PID and b.Status=@status and b.EDate>=@fdate and b.EDate<=@tdate
+	
+	end
+	else if @var = 0
+	begin
+		SELECT p.*,b.* FROM  PATIENTMST as p, BillMst as b where p.PID=b.PID and b.EDate>=@fdate and b.EDate<=@tdate
+	end
+	else if @var = 2
+	begin
+		SELECT p.*,b.* FROM  PATIENTMST as p, BillMst as b where p.PID=b.PID and b.Status='UnPaid' and p.RoomType=@status
+
+	end
+	else if @var = 3
+	begin
+		SELECT p.*,b.* FROM  PATIENTMST as p, BillMst as b where p.PID=b.PID and b.Status='Paid' and p.RoomType=@status
+end
+	
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PATIENT_SELECT_BILL_STATUS_REPORT]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[PATIENT_SELECT_BILL_STATUS_REPORT]
+@status as nvarchar(256)		
+AS
+BEGIN
+	
+	
+	SELECT p.*,b.* FROM  PATIENTMST as p, BillMst as b where p.PID=b.PID and b.Status=@status
+	
+	
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PATIENT_SELECT]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[PATIENT_SELECT]
+		
+AS
+BEGIN
+	
+	
+	SELECT * FROM  PATIENTMST
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PATIENT_NAME_SELECT_BY_BID]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create PROCEDURE [dbo].[PATIENT_NAME_SELECT_BY_BID]
+		@bid as int
+AS
+BEGIN
+	
+	
+	SELECT * FROM  PATIENTMST where PID in(select PID from BillMst where BID=@bid)
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PATIENT_INSERT]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[PATIENT_INSERT]
+	@PNAME AS NVARCHAR(256),
+	@GENDER AS NVARCHAR(256),
+	@AGE AS INT,
+	@ADDRESS AS NVARCHAR(256),
+	@CITY AS NVARCHAR(256),
+	@PINCODE AS NVARCHAR(256),
+	@MOBILE AS NVARCHAR(256),
+	@REFBYDOCOTR AS NVARCHAR(256),
+	@DISEASE AS NVARCHAR(256),
+	@Doctor as nvarchar(256),
+	@roomtype as nvarchar(256),
+	@estbill as float
+AS
+BEGIN
+	
+	
+	INSERT INTO PATIENTMST VALUES (@PNAME,@GENDER,@AGE,@ADDRESS,@CITY,@PINCODE,@MOBILE,@REFBYDOCOTR,@DISEASE,@Doctor,@roomtype,@estbill,'Admit',GETDATE())
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PATIENT_DELETE]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[PATIENT_DELETE]
+	@PID AS INT	
+AS
+BEGIN
+	
+	
+	DELETE FROM  PATIENTMST WHERE PID=@PID
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[PATIENT_ADMIT]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[PATIENT_ADMIT]
+	@PID AS INT,
+	@DRNAME AS NVARCHAR(256),
+	@ROOM AS NVARCHAR(256),
+	@EBILL AS FLOAT
+AS
+BEGIN
+	
+	
+	UPDATE PATIENTMST SET DOCTORNAME=@DRNAME,ROOMTYPE=@ROOM,ESTIMATEDBILL=@EBILL WHERE PID=@PID
+	
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[DOCTOR_UPDATE]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[DOCTOR_UPDATE]
+
+
+@DID AS INT,
+@MOBILE AS NVARCHAR(256),
+@SPECI AS NVARCHAR(256)
+
+
+AS
+BEGIN
+	
+	
+UPDATE DOCTORMST SET MOBILE= @MOBILE,Speciality= @SPECI WHERE DID=@DID
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[DOCTOR_SELECT_BY_SPECIALITY]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[DOCTOR_SELECT_BY_SPECIALITY]
+@SPECIALITY AS NVARCHAR(256)
+
+AS
+BEGIN
+	
+	
+SELECT * FROM DOCTORMST	WHERE SPECIALITY=@SPECIALITY
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[DOCTOR_SELECT_BY_DID]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[DOCTOR_SELECT_BY_DID]
+
+@DID AS INT
+
+AS
+BEGIN
+	
+	
+SELECT * FROM DOCTORMST	WHERE DID=@DID
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[DOCTOR_SELECT]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[DOCTOR_SELECT]
+
+AS
+BEGIN
+	
+	
+SELECT * FROM DOCTORMST	
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[DOCTOR_INSERT]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[DOCTOR_INSERT]
+
+
+@DRNAME AS NVARCHAR(256),
+@MOBILE AS NVARCHAR(256),
+@SPECI AS NVARCHAR(256)
+
+
+AS
+BEGIN
+	
+	
+INSERT INTO DOCTORMST	VALUES (@DRNAME,@MOBILE,@SPECI,GETDATE())
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[DOCTOR_DELETE]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[DOCTOR_DELETE]
+@DID AS INT
+
+AS
+BEGIN
+	
+	
+DELETE FROM DOCTORMST	WHERE DID=@DID
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[BILLMST_SELECT_BY_STATUS]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[BILLMST_SELECT_BY_STATUS]
+
+@STATUS AS NVARCHAR(256)
+
+AS
+BEGIN
+
+	
+SELECT * FROM BillMst WHERE Status=@STATUS
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[BILLMST_SELECT_BY_PID]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[BILLMST_SELECT_BY_PID]
+@PID AS INT
+AS
+BEGIN
+	
+	
+SELECT * FROM BillMst WHERE PID=@PID
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[BILLMST_SELECT_BY_BID]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[BILLMST_SELECT_BY_BID]
+@BID AS INT
+AS
+BEGIN
+	
+	
+SELECT * FROM BillMst WHERE BID=@BID
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[BILLMST_SELECT]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[BILLMST_SELECT]
+
+AS
+BEGIN
+	
+	
+SELECT * FROM BillMst
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[BILLMST_PAY_BILL]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[BILLMST_PAY_BILL]
+
+@BID AS INT,
+@PBILL AS FLOAT,
+@STATUS AS NVARCHAR(256)
+
+AS
+BEGIN
+
+UPDATE BillMst SET PAID_BILL=PAID_BILL+@PBILL,REMAINING_BILL=REMAINING_BILL-@PBILL,STATUS=@STATUS WHERE BID=@BID
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[BILLMST_INSERT]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[BILLMST_INSERT]
+
+@PID AS INT,
+@RBILL AS FLOAT,
+@DBILL AS FLOAT,
+@MBILL AS FLOAT,
+@TBILL AS FLOAT,
+@PBILL AS FLOAT,
+@RMBILL AS FLOAT,
+@STATUS AS NVARCHAR(256)
+
+AS
+BEGIN
+
+INSERT INTO BillMst VALUES(@PID,@RBILL,@DBILL,@MBILL,@TBILL,@PBILL,@RMBILL,@STATUS,GETDATE())
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[BILLMST_DELETE]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[BILLMST_DELETE]
+@BID AS INT
+AS
+BEGIN
+	
+	
+delete FROM BillMst WHERE PID=@BID
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[BILLMST_ADD_ROOM_BILL]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[BILLMST_ADD_ROOM_BILL]
+
+@BID AS INT,
+@RBILL AS FLOAT
+
+
+AS
+BEGIN
+
+UPDATE BillMst SET REMAINING_BILL=REMAINING_BILL+@RBILL, Room_Bill=Room_Bill + @RBILL, Total_Bill=Total_Bill+@RBILL WHERE BID=@BID
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[BILLMST_ADD_BILL]    Script Date: 09/02/2020 17:05:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[BILLMST_ADD_BILL]
+
+@PID AS INT,
+@RBILL AS FLOAT,
+@drbill as float,
+@medibill  as float,
+@TBILL as float
+
+
+AS
+BEGIN
+
+UPDATE BillMst SET  Room_Bill=Room_Bill + @RBILL,Doctor_Bill=Doctor_Bill+@drbill,Medicine_Bill=Medicine_Bill + @medibill, REMAINING_BILL=REMAINING_BILL+@TBILL, Total_Bill=Total_Bill+@TBILL,Status='UnPaid' WHERE PID=@PID
+	
+END
+GO
